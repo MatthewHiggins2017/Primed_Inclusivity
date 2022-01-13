@@ -1,0 +1,3 @@
+PrimerID,PrimerSeq,Set,BindingChromo,BindingSite,Sense,Binding_Sites
+FP_1,ATTAAAGGTTTATACCTTCCCAGGTAAC,0,Covid19,0,+,"[(1, 'F', 0)]"
+RP_1,CCGTAAGCAGCCTGCAG,1,Covid19,182,-,"[(1, 'R', 182)]"

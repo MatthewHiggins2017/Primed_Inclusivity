@@ -1,0 +1,5 @@
+Country,Rep_Index,Samples,total,total_unadjusted,1
+England,0,Sample_1:Sample_3,80.0,2.0,0.5
+Wales,1,Sample_2,20.0,1.0,0.0
+,Unadjusted_PB,,,,0.333333333333333
+,Adjusted_PB,,,,0.4

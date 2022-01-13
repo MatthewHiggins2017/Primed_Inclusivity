@@ -1,0 +1,4 @@
+FP_1,RP_1,Samples,Sample_PB
+PB:0.0,PB:1.0,Sample_1,0.0
+PB:1.0,PB:0.0,Sample_2,0.0
+PB:1.0,PB:1.0,Sample_3,1.0

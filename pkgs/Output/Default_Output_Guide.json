@@ -1,0 +1,21 @@
+{"Output Engine":
+
+    {
+
+    "Output Variables":{
+                        "PB":{
+                              "Description":"PerfectBinding",
+                               "Reference_Value":1,
+                               "Binding_Combination":"Max",
+                               "Sample_Combination":"Max",
+                               "Set_Combination":"Min"  }
+                         },
+
+
+    "Output Functions":{
+                        "PB":{
+                              "0":0,
+                              "1":1}
+                        }
+    }
+}

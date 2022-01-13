@@ -1,0 +1,13 @@
+{"Representation":
+
+  { "RepTags": {"Country": {"England":80,
+                            "Wales":20}},
+
+
+   "SampleTags": {"Sample_1": {"Country":"England"},
+
+                 "Sample_2": {"Country": "Wales"}
+                  }
+
+  }
+}

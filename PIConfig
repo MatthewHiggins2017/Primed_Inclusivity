@@ -1,0 +1,107 @@
+#! /usr/bin/env python3
+
+'''
+Need to test and debug accordingly.
+'''
+
+import os
+import json
+import filecmp
+import argparse
+from shutil import copyfile
+
+def FileCheck(DirPath,FilePath):
+
+    # Derive path if module was included in relevant directory.
+    FileName = FilePath.split('/')[-1]
+    IncludedPath = '{}/{}'.format(DirPath,FileName)
+
+    # Check if file is present
+    CopyFile = False
+    if os.path.isfile(IncludedPath) == True:
+
+        # check if file is identical.
+        if filecmp.cmp(IncludedPath,FilePath) == False:
+            CopyFile = True
+    else:
+        CopyFile = True
+
+    # If file not present copy it across.
+    if CopyFile == True:
+        copyfile(FilePath,IncludedPath)
+
+    return True
+
+
+
+def InitUpdate(DirPath,C,MN):
+
+    # Delete existing file.
+    InitFilePath = '{}/__init__.py'.format(DirPath)
+    os.remove(InitFilePath)
+
+    # Write new _init_file
+    RI = open(InitFilePath,'w')
+    for N in MN:
+        RI.write('from .{} import *\n'.format(N))
+        print('{}: {} Module Added!'.format(C,N))
+    RI.close()
+
+    return True
+
+
+
+def RunningConfig(ConfigArgs):
+
+    #Loop through classification and output entries
+    for I in ConfigArgs.DCJ['PIConfig'].keys():
+
+        # Identify if file existing in necessary directory, if not
+        # copy the file over. Dont only check if pathname exists but if the
+        # files are identical as name may remain the same but updates made
+        RelDir = '{}/pkgs/{}'.format(ConfigArgs.PackagePath,I)
+
+        MN = []
+        for CF in ConfigArgs.DCJ['PIConfig'][I]:
+
+
+            MN.append(CF.split('/')[-1].split('.')[0])
+
+
+            FileCheck(RelDir,CF)
+
+            # Add custom module names.
+
+
+        # Subsequently update the __init__ file so the custom packages
+        # will be loaded on deployment.
+        InitUpdate(RelDir,I,MN)
+
+    return True
+
+################################################################################
+################################################################################
+################################################################################
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-D','--Default',action='store_true', help='Return PrimedInclusivity to default settings.')
+parser.add_argument('-CF','--ConfigFile', help='Custom file defining the output and classification modules to add')
+ConfigArgs = parser.parse_args()
+ConfigArgs.PackagePath = os.path.dirname(os.path.abspath(__file__))
+
+
+if ConfigArgs.Default == True:
+
+    ConfigArgs.DCJ = {"PIConfig":{"Classification":['{}/pkgs/Classification/DefaultClassification.py'.format(ConfigArgs.PackagePath)],
+                       "Output":['{}/pkgs/Output/DefaultOutput.py'.format(ConfigArgs.PackagePath)],
+                       }}
+
+else:
+    with open(ConfigArgs.ConfigFile) as CJ:
+        ConfigArgs.DCJ  = json.load(CJ)
+
+
+
+RunningConfig(ConfigArgs)
+print('Configuration Complete!')

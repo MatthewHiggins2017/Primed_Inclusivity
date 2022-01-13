@@ -1,0 +1,30 @@
+{"Output Engine":
+  {
+    "Output Variables":
+  {
+    "RS": {"Description": "Reaction Success",
+         "Reference_Value": 1,
+         "Binding_Combination": "Max",
+         "Sample_Combination": "Max",
+         "Set_Combination": "Min"
+       },
+
+    "PB": {"Description": "PerfectBinding",
+         "Reference_Value": 1,
+         "Binding_Combination": "Max",
+         "Sample_Combination": "Max",
+         "Set_Combination": "Min"}
+
+
+  },
+
+  "Output Functions":
+  {
+    "MinLen": {"Threshold":18},
+
+     "PB": {"0": 0,
+            "1": 1}
+
+  }
+  }
+}

@@ -1,0 +1,3 @@
+PrimerID,PrimerSeq,Set,BindingChromo,BindingSite,Sense
+FP_1,ATTAAAGGTTTATACCTTCCCAGGTAAC,0,Covid19,0,+
+RP_1,CCGTAAGCAGCCTGCAG,1,Covid19,182,-

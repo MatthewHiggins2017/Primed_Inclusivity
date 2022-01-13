@@ -1,0 +1,15 @@
+##fileformat=VCFv4.1
+##FILTER=<ID=PASS,Description="All filters passed">
+##contig=<ID=AF033819.3,length=1750>
+##INFO=<ID=QNAME,Number=1,Type=String,Description="Query name">
+##INFO=<ID=QSTART,Number=1,Type=Integer,Description="Query start">
+##INFO=<ID=QSTRAND,Number=1,Type=String,Description="Query strand">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##bcftools_mergeVersion=1.11+htslib-1.11
+##bcftools_mergeCommand=merge -o merged.vcf Sample_1.srt.vcf.gz Sample_2.srt.vcf.gz Sample_3.srt.vcf.gz Sample_4.srt.vcf.gz; Date=Mon Oct  5 16:04:23 2020
+##bcftools_viewVersion=1.11+htslib-1.11
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	Sample_1	Sample_2	Sample_3	Sample_4
+Test_Driven_Dev	70	.	C	T	60	.	QNAME=Sample_One;QSTART=70;QSTRAND=+	GT	1/1	./.	1/1	./.
+Test_Driven_Dev	72	.	CAAT	CT	60	.	QNAME=Sample_One;QSTART=70;QSTRAND=+	GT	1/1	./.	1/1	./.
+Test_Driven_Dev	1401	.	C	A,T	60	.	QNAME=AF033819.3;QSTART=1401;QSTRAND=+	GT	./.	1/1	./.	2/2
+Test_Driven_Dev	1404	.	CCA	CTTTTA	60	.	QNAME=AF033819.3;QSTART=1401;QSTRAND=+	GT	./.	1/1	./.	1/1

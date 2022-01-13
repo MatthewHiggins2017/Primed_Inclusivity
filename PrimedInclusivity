@@ -1,0 +1,305 @@
+#! /usr/bin/env python3
+
+
+################################################################################
+################################################################################
+import argparse
+import logging
+from pkgs import *
+PackagePath = os.path.dirname(os.path.abspath(__file__))
+################################################################################
+################################################################################
+
+# Declare for Multiprocess
+if __name__ == '__main__':
+
+    # Parse Input Parameters
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i','--RunID', help='Desired Run ID', required=True)
+    parser.add_argument('-@','--Threads', help='Number of Parallel Processess',default=1)
+    parser.add_argument('-v','--VCF', help='Path to VCF',default='')
+    parser.add_argument('-SF','--SamplesFile', help='Path to file containing samples of interest used in VCF subsetting.',default='')
+    parser.add_argument('-t','--Target', help='Path to Target Fasta',default='')
+    parser.add_argument('-p','--Primers', help='Path to CSV containing Primer Information',default='')
+    parser.add_argument('-s','--Sets', help='Path to CSV containing Sets Information',default='')
+    parser.add_argument('-o','--Output', help='Desired Output Directory Path',default='')
+    parser.add_argument('-RG','--RepresentationGuide', help='Path to Representation Json',default='')
+    parser.add_argument('-OG','--OutputGuide', help='Path to Output Guide',default='{}/pkgs/Output/Default_Output_Guide.json'.format(PackagePath))
+    parser.add_argument('-OT','--OutputType', help='Define what information should be written from database to CSV files. '+ \
+                                                    'Options: All (A), Sets (S), Binding Classification (BC), Sample vs Primer (SvP), ' + \
+                                                    'Representation Tables (RT). Ensure input values are comma seperated.',
+                                              default = 'S')
+
+    # Input parameters associated with updating probability or representation
+    parser.add_argument('-DB','--DatabasePath', help='Path to Previously Generated Database.',default='')
+    parser.add_argument('-UP','--UpdateProbability', action='store_true')
+
+    # Input parameters associated with finding optimum binding.
+    parser.add_argument('--AnchorRegion', help='Length of 3 prime anchor region',default=5)
+    parser.add_argument('--AnchorRegionMismatchScaler', help='',default=1.2)
+    parser.add_argument('--AnchorAdjacentMismatchScalar', help='',default=2)
+    parser.add_argument('--AdjacentMismatchScalar', help='',default=1.5)
+    parser.add_argument('--ComplementaryScalar', help='',default=1)
+    parser.add_argument('--MismatchScaler', help='',default=1)
+    parser.add_argument('--ThermoMinLength', help='',default=10)
+
+    PrimedInclParameter = parser.parse_args()
+
+################################################################################
+################################################################################
+################################################################################
+
+    #==================================================
+    # Generate Log File
+    #==================================================
+    logging.basicConfig(filename='{}/{}.log'.format(PrimedInclParameter.Output,
+                                                    PrimedInclParameter.RunID),
+                        format='%(asctime)s : %(message)s',
+                        datefmt='%m/%d/%Y %I:%M:%S %p',
+                        level=logging.DEBUG)
+
+
+    logging.info('PrimedInclusivity Run: {}'.format(PrimedInclParameter.RunID))
+
+    #==================================================
+    # Check Key Files Are Present
+    #==================================================
+
+    # Confirm Key Files are Present
+    for F in [PrimedInclParameter.VCF,
+              PrimedInclParameter.Target,
+              PrimedInclParameter.Primers,
+              PrimedInclParameter.Sets]:
+
+        FilePresent(F,True)
+
+    # Check if Output Directory Exists and Make
+    CheckAndMake(PrimedInclParameter.Output)
+
+
+    # Check Output Path defines neccesary directory end
+    if PrimedInclParameter.Output[-1] != '/':
+        PrimedInclParameter.Output += '/'
+
+
+    #==================================================
+    # Generate OutputVar
+    #==================================================
+
+    PrimedInclParameter.OutputVar = ExtractOutputVar(PrimedInclParameter.OutputGuide)
+
+
+    #==================================================
+    # Generate and Connect to SQL Database
+    #==================================================
+
+    # If necessary create new database or alternatively,
+    # connect to existing database if provided.
+    if len(PrimedInclParameter.DatabasePath) == 0:
+
+        # Create SQL Database and Respective Connection
+        PrimedInclParameter.DatabasePath = '{}{}.db'.format(PrimedInclParameter.Output,
+                                            PrimedInclParameter.RunID.replace(' ','_'))
+
+    SQLDBConn = create_sql_connection(PrimedInclParameter.DatabasePath)
+
+    logging.info("Database created")
+
+    #==================================================
+    # Extract Samples List
+    #==================================================
+
+
+    if FilePresent(PrimedInclParameter.SamplesFile,False):
+        SF = open(PrimedInclParameter.SamplesFile,'r')
+        PrimedInclParameter.SamplesList = [S.replace('\n','') for S in SF.readlines()]
+    else:
+        PrimedInclParameter.SamplesList = VCFSampleExtract(PrimedInclParameter.VCF)
+        SFID = '{}/{}_Samples_List.txt'.format(PrimedInclParameter.Output,
+                                          PrimedInclParameter.RunID).replace('//','/')
+        SF = open(SFID,'w')
+        for SID in PrimedInclParameter.SamplesList:
+            SF.write('{}\n'.format(SID))
+        SF.close()
+        PrimedInclParameter.SamplesFile = SFID
+
+    logging.info("Samples Identified: {}".format(len(PrimedInclParameter.SamplesList)))
+
+    #==================================================
+    # Prior Sets Extraction
+    #==================================================
+
+    SetsInfo = pd.read_csv(PrimedInclParameter.Sets)
+    SetIDList = SetsInfo['SetID'].tolist()
+    PrimedInclParameter.SetIDList = SetIDList
+
+    logging.info("Sets Identified: {}".format(len(PrimedInclParameter.SetIDList)))
+
+    #==================================================
+    # Create Samples vs Representation Table
+    #==================================================
+
+    if PrimedInclParameter.RepresentationGuide != '':
+        RepDF = GenerateRepresentationTable(PrimedInclParameter.RepresentationGuide)
+    # If no representation file is provided treat all as samples as having
+    # equal representation.
+    else:
+        RepDF = pd.DataFrame({'Rep_Index':range(len(PrimedInclParameter.SamplesList)),
+                              'Samples':PrimedInclParameter.SamplesList,
+                              'total':[1]*len(PrimedInclParameter.SamplesList)})
+
+        logging.info("Representation file added")
+
+    # Add SetID columns to representation dataFrame
+    RepDF = pd.concat([RepDF, pd.DataFrame(columns=SetIDList)])
+
+    OutputVars = list(PrimedInclParameter.OutputVar.keys())
+    LOII = len(RepDF)
+    for OV in OutputVars:
+
+        RepDF.loc[LOII,'Rep_Index'] = 'Unadjusted_{}'.format(OV)
+        RepDF.loc[LOII+1,'Rep_Index'] = 'Adjusted_{}'.format(OV)
+
+
+        RepDF.to_sql('{}_Representation_Table'.format(OV),SQLDBConn)
+
+
+
+    if PrimedInclParameter.UpdateProbability == False:
+
+
+        #==================================================
+        # Add Primer and Sets Tables to Database
+        #==================================================
+
+        # Read in Key Files and save to SQLDatabase
+        PrimerInfo = pd.read_csv(PrimedInclParameter.Primers)
+        PrimerInfo.to_sql('Primer_Table',SQLDBConn)
+        PrimerIDList = PrimerInfo['PrimerID'].tolist()
+        del PrimerInfo
+
+
+        for OV in OutputVars:
+        # Add necessary columns which store output metrics
+            SetsInfo['Unadjusted_{}'.format(OV)] = np.nan
+            SetsInfo['Adjusted_{}'.format(OV)] = np.nan
+
+        SetsInfo.to_sql('Sets_Table',SQLDBConn)
+        del SetsInfo
+
+
+        #==================================================
+        # Create Binding Sequences Table
+        #==================================================
+        BindingSeqDF = pd.DataFrame(columns=['PrimerID',
+                                             'BindingSeqIndex',
+                                             'BindingSeq',
+                                             'BindingArray',
+                                             'ClassificationString'])
+
+
+        BindingSeqDF.to_sql('Binding_Seq_Table',SQLDBConn)
+
+
+        #==================================================
+        # Create Samples vs Binding Sequences Table
+        #==================================================
+
+        SvsPDF = pd.DataFrame(columns=PrimerIDList)
+        SvsPDF['Samples'] =PrimedInclParameter.SamplesList
+        SvsPDF.to_sql('Sample_vs_Primer_Table',SQLDBConn)
+
+
+
+
+################################################################################
+################################################################################
+
+    if PrimedInclParameter.UpdateProbability == False:
+
+        # ==========
+        # Step Three
+        # ==========
+        # Determine alternative binding sequence for each mismatch, ideally to speed
+        # things up would try to speed up analysis on individual primer and not the
+        # whole set. I.e loop through each primer. Then determine the number of alternative
+        # binding sites. Parallise the analysis of these binding sites over N processes.
+        logging.info("Primer Binding Sites Extraction: Initiated")
+
+        for PrimedID in PrimerIDList:
+            BindingSiteExtraction(PrimedID,
+                                  PrimedInclParameter)
+
+        logging.info("Primer Binding Sites Extraction: Completed")
+
+
+
+    # ==========
+    # Step Four
+    # ==========
+    # Determine set specific probabilities and write summaries to SQL table
+    # and store sample specific information. To speed up can either multiprocess
+    # the assessment of each set or for each set the extraction of probability
+    # in the alternative binding sequences dataframe and then the update to
+    # probability in the Sample vs Primer Table. Possibly it is wise to add set specific
+    # probability column for each set to the Sample_vs_Primer_Table.
+
+    logging.info("Calculating Output Metrics: Initiated")
+
+    for SetID in SetIDList:
+        DeriveSetMetrics(SetID,
+                         PrimedInclParameter)
+
+    logging.info("Calculating Output Metrics: Completed")
+
+
+    # ==========
+    # Step Five (Update the representation table)
+    # ==========
+    for OV in OutputVars:
+        DeriveCombinedOutput(OV,
+                             PrimedInclParameter)
+
+
+
+
+    # ==========
+    # Step Six (Update based on OutputType )
+    # ==========
+
+
+    # Write output to CSV file. For alpha version just write out sets table on
+    # completion. Do this using pandas.
+    OutputTypeDict = {'S':['Sets_Table'],
+                      'BS':['Binding_Seq_Table'],
+                      'SvP':['Set_{}_S_v_P'.format(s) for s in SetIDList],
+                      'RT':['{}_Representation_Table'.format(OV) for OV in OutputVars]}
+
+
+    if PrimedInclParameter.OutputType == 'A':
+        OutputTables = ['S','BS','SvP','RT']
+    else:
+        OutputTables = PrimedInclParameter.OutputType.split(',')
+
+    for OT in OutputTables:
+
+        for TT in OutputTypeDict[OT]:
+
+            OutputSets = pd.read_sql_query("SELECT * FROM {}".format(TT), SQLDBConn)
+
+            # General Housekeeping
+            if 'index' in OutputSets.columns:
+                OutputSets = OutputSets.drop('index',axis='columns')
+
+            OutputSets.to_csv('{}/{}_{}.csv'.format(PrimedInclParameter.Output,
+                                                    PrimedInclParameter.RunID,
+                                                    TT).replace('//','/'),
+                                                    index=None)
+
+
+    logging.info("PrimedInclusivity Run Complete!")
+    logging.info("If useful please cite.")
+
+
+################################################################################
+################################################################################

@@ -1,0 +1,198 @@
+
+
+
+python PrimedInclusivity -i Test -t ./Validation/TDD/Test.fa -v ./Validation/TDD/Haploid_Test.vcf -H -p ./Validation/TDD/Primer_Input.csv  -s ./Validation/TDD/Set_Input.csv -o ~/Downloads/PrimedInclTestEnv
+
+
+
+
+===============================================================================
+
+
+
+
+>Primer_1 | () | Forward Sense
+GCTTAAGCCTCAATAAAGC
+
+>Primer_2 | () | Reverse Sense
+TTATGGCCGGGTCCTCCTAC
+
+
+Assume they are using Q5 polymerase the neb website states
+(https://tmcalculator.neb.com/#!/main) that a melting temperature
+of 59oC should be used as Primer 1 has tm of 58 and Primer 2 has a tm of 69.
+
+Set Tm = 58oC
+
+
+===========================================================================
+Overview of Sample 1 to 4 What Binding Seqs Should be obtained.
+The changed nucleotides are in lower case.
+===========================================================================
+
+Sample 1 Binding Seqs
+
+>p1
+GCTTAAGCtTCTAAAGCtt
+
+>p2
+TTATGGCCGGGTCCTCCTAC
+
+=========================
+Sample 2 Binding Seqs
+
+>p1
+GCTTAAGCCTCAATAAAGC
+
+>p2
+TTATaaaaGCCaGGTCCTCCTAC
+
+
+=========================
+Sample 3 Binding Seqs
+
+>p1
+GCTTAAGCtTCTAAAGCtt
+
+>p2
+TTATGGCCGGGTCCTCCTAC
+
+=========================
+Sample 4 Binding Seqs
+
+>p1
+GCTTAAGCCTCAATAAAGC
+
+>p2
+TTATaaaaGCCtGGTCCTCCTAC
+
+
+
+===========================================================================
+
+What Primer Binding Is Obtained and respective probabilities.
+
+===========================================================================
+
+
+Primer 1
+
+Sample 1 = 50%
+Sample 2 = 100%
+Sample 3 = 50%
+Sample 4 = 100%
+
+
+
+######################
+Sample 1 & 3 Breakdown
+
+GCTTAAGCCTCAATAAAGC
+||||||||-||||||||--
+GCTTAAGCtTCTAAAGCtt
+
+Classification
+
+Pol Inhibition = T + 1n
+
+Max John SantaLucia =
+
+GCTTAAGCCTCAATAAAG
+||||||||-||||||||-
+GCTTAAGCtTCTAAAGCt
+
+DETERMINE GIBBS FREE ENERGY VALUES
+
+For now just hardcoding probability as 50%
+
+######################
+
+Primer 2
+
+Sample 1 = 100%
+Sample 2 = 50%
+Sample 3 = 100%
+Sample 4 = 40%
+
+######################
+Sample 2 Breakdown
+
+TTATGG---CCGGGTCCTCCTAC
+||||||---||-|||||||||||
+TTATaaaaGCCaGGTCCTCCTAC
+
+Classification: NA
+
+Max John SantaLucia:
+
+CCGGGTCCTCCTAC
+||-|||||||||||
+CCaGGTCCTCCTAC
+
+DETERMINE GIBBS FREE ENERGY VALUES
+
+
+######################
+Sample 4 Breakdown
+
+TTATGG---CCGGGTCCTCCTAC
+||||||---||-|||||||||||
+TTATaaaaGCCtGGTCCTCCTAC
+
+Classification: NA
+
+CCGGGTCCTCCTAC
+||-|||||||||||
+CCtGGTCCTCCTAC
+
+DETERMINE GIBBS FREE ENERGY VALUES
+
+######################
+
+
+
+
+========================================================================
+Brainstomring:
+========================================================================
+
+
+Need to figure out way to account for multiple mismatches
+i.e. if the following scenario occurs:
+
+GCTTAAGCCTCAAccAAGC
+|||||||||||||--||||
+GCTTAAGCCTCAATAAAGC
+
+The max 3' john SantaLucia complex would be
+
+AAGC
+||||
+AAGC
+
+which may have a tiny Tm i.e 5oC , however we cannot ignore
+the stabilising effect of the rest of the complex. One potential
+estimate to establish the impact of two mismatch destabilisation
+is to:
+
+1) Estimate the Tm as if the break was not there:
+
+GCTTAAGCCTCAATAAAGC
+|||||||||||||||||||
+GCTTAAGCCTCAATAAAGC
+
+Tm = 56
+
+Then calculate difference between the two:
+
+56 - 5 = 51
+
+Then scale the Tm according to the size of % size of break
+relative to length of full complex. So the final Tm would be
+
+Tm = 56 - ((2/19) * 51) = 50.6
+
+Need to check if this theory holds up, i.e compare the melt
+temp to just single mismatch and see if lower value obtained, can
+do this as meets assumptions. Also need to see if theory of wobbly
+5' ends matters as will this affect polymerase recruitment.

@@ -1,0 +1,2 @@
+SetID,Primers_Included,Annealing_Temperature,Monovalent_Cation_Concentration_(mM),Divalent_Cation_Concentration_(mM),Total_dNTP_Concentration_(mM),Primer_Concentration_(uM)
+1,FP_1:RP_1,56,50,1.5,0.8,0.2

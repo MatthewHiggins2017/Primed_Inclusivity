@@ -1,0 +1,13 @@
+RunID: Validation_Run_1_Meta
+VCFPath: /Users/matthewhiggins/Documents/PhD/Programming/Github/PrimedInclusivity/Validation/TDD/Haploid_Test.vcf
+
+####
+
+Samples:
+
+Sample_1
+Sample_2
+Sample_3
+Sample_4
+
+####

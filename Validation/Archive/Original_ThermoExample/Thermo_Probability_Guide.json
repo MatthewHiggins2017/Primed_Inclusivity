@@ -1,0 +1,29 @@
+{"Probability Engine":
+
+  {"MM_Pos": {"0":[
+
+                 {"Primer_Nucleotide":"A",
+                  "Template_Nucleotide":"C",
+                  "Probability":0.01},
+
+                  {"Primer_Nucleotide":".",
+                   "Template_Nucleotide":".",
+                   "Probability":0.8}],
+
+
+            "1":[ {"Primer_Nucleotide":"A",
+                   "Template_Nucleotide":"C",
+                   "Probability":0.01},
+
+                  {"Primer_Nucleotide":".",
+                   "Template_Nucleotide":".",
+                   "Probability":0.8}]
+            },
+
+    "BindingFraction": {"Formula":"X * 0.8",
+                        "Reliability_Threshold":0.5}
+
+
+
+     }
+}
