@@ -1,1 +1,12 @@
-{"PIConfig": {"Classification": ["/Users/matthewhiggins/Documents/PhD/Programming/Github/00_PrimedInclusivity_Project/PrimedInclusivity/pkgs/Classification/DefaultClassification.py", "/Users/matthewhiggins/Documents/PhD/Programming/Github/00_PrimedInclusivity_Project/PrimedInclusivity/Tutorial/MinLenClassification.py"], "Output": ["/Users/matthewhiggins/Documents/PhD/Programming/Github/00_PrimedInclusivity_Project/PrimedInclusivity/pkgs/Output/DefaultOutput.py", "/Users/matthewhiggins/Documents/PhD/Programming/Github/00_PrimedInclusivity_Project/PrimedInclusivity/Tutorial/MinLenOutput.py"]}}
+{
+  "PIConfig": {
+    "Classification": [
+      "/Users/matthewhiggins/Documents/PhD/Programming/Github/00_PrimedInclusivity_Project/PrimedInclusivity/pkgs/Classification/DefaultClassification.py",
+      "/Users/matthewhiggins/Documents/PhD/Programming/Github/00_PrimedInclusivity_Project/PrimedInclusivity/Tutorial/MinLenClassification.py"
+    ],
+    "Output": [
+      "/Users/matthewhiggins/Documents/PhD/Programming/Github/00_PrimedInclusivity_Project/PrimedInclusivity/pkgs/Output/DefaultOutput.py",
+      "/Users/matthewhiggins/Documents/PhD/Programming/Github/00_PrimedInclusivity_Project/PrimedInclusivity/Tutorial/MinLenOutput.py"
+    ]
+  }
+}
