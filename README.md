@@ -12,7 +12,7 @@ To Do:
 * Provide detailed breakdown of Representation Guide
 
 -----------------------
-### **Summary**
+**Summary**
 
 
 PrimedInclusivity is a python-based programmable framework, enabling researchers to detect and gauge the impact of primer binding site heterogeneity on NAAT-based assay performance.
@@ -21,7 +21,7 @@ PrimedInclusivity is a python-based programmable framework, enabling researchers
 
 
 -----------------------
-### **Installation**
+**Installation**
 
 
 From GitHub.
@@ -45,7 +45,7 @@ From Conda
 
 ------------------------
 
-# **Input Parameters**
+**Input Parameters**
 
 
 | **Variable ID**                   | **Symbol**  | **Description** |
