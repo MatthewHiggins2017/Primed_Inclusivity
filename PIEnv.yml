@@ -18,8 +18,6 @@ dependencies:
   - libdeflate=1.7
   - libedit=3.1.20191231
   - libffi=3.2.1
-  - libgfortran=5.0.0
-  - libgfortran5=9.3.0
   - libopenblas=0.3.20
   - libssh2=1.10.0
   - libzlib=1.2.12
@@ -47,4 +45,3 @@ dependencies:
     - regex==2022.6.2
     - six==1.16.0
     - sympy==1.6.2
-prefix: /Users/matthewhiggins/miniconda3/envs/PIEnv
