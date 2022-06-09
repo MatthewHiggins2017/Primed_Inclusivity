@@ -5,38 +5,38 @@ channels:
   - defaults
   - r
 dependencies:
-  - bcftools=1.11=he8d9d6d_0
-  - bzip2=1.0.8=h0d85af4_4
-  - ca-certificates=2022.5.18.1=h033912b_0
-  - gsl=2.6=h71c5fe9_2
-  - htslib=1.11=h422799e_2
-  - krb5=1.17.2=h60d9502_0
-  - libblas=3.9.0=15_osx64_openblas
-  - libcblas=3.9.0=15_osx64_openblas
-  - libcurl=7.71.1=he6690cf_1
-  - libcxx=14.0.4=hc203e6f_0
-  - libdeflate=1.7=h35c211d_5
-  - libedit=3.1.20191231=h0678c8f_2
-  - libffi=3.2.1=1
-  - libgfortran=5.0.0=9_3_0_h6c81a4c_23
-  - libgfortran5=9.3.0=h6c81a4c_23
-  - libopenblas=0.3.20=openmp_hb3cd9ec_0
-  - libssh2=1.10.0=h52ee1ee_2
-  - libzlib=1.2.12=h6c3fc93_0
-  - llvm-openmp=14.0.4=ha654fa7_0
-  - ncurses=6.3=h96cf925_1
-  - openssl=1.1.1o=hfe4f2af_0
-  - perl=5.32.1=2_h0d85af4_perl5
-  - pip=22.1.2=pyhd8ed1ab_0
-  - python=3.8.3=cpython_hd5f0129_0
-  - python_abi=3.8=2_cp38
-  - readline=8.1=h05e3726_0
-  - setuptools=62.3.3=py38h50d1736_0
-  - sqlite=3.38.5=hd9f0692_0
-  - tk=8.6.12=h5dbffcc_0
-  - wheel=0.37.1=pyhd8ed1ab_0
-  - xz=5.2.5=haf1e3a3_1
-  - zlib=1.2.12=h6c3fc93_0
+  - bcftools=1.11
+  - bzip2=1.0.8
+  - ca-certificates=2022.5.18.1
+  - gsl=2.6
+  - htslib=1.11
+  - krb5=1.17.2
+  - libblas=3.9.0
+  - libcblas=3.9.0
+  - libcurl=7.71.1
+  - libcxx=14.0.4
+  - libdeflate=1.7
+  - libedit=3.1.20191231
+  - libffi=3.2.1
+  - libgfortran=5.0.0
+  - libgfortran5=9.3.0
+  - libopenblas=0.3.20
+  - libssh2=1.10.0
+  - libzlib=1.2.12
+  - llvm-openmp=14.0.4
+  - ncurses=6.3
+  - openssl=1.1.1o
+  - perl=5.32.1
+  - pip=22.1.2
+  - python=3.8.3
+  - python_abi=3.8
+  - readline=8.1
+  - setuptools=62.3.3
+  - sqlite=3.38.5
+  - tk=8.6.12
+  - wheel=0.37.1
+  - xz=5.2.5
+  - zlib=1.2.12
   - pip:
     - ipfn==1.4.4
     - mpmath==1.2.1
