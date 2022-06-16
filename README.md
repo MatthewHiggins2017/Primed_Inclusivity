@@ -1,13 +1,10 @@
-# **PrimedInclusivity**
+# **Primed Inclusivity**
 -----------------------
 
 **Note**-*This page is still under development*
 
 To Do:
 
-* Create quick start example
-* Provide detailed breakdown of Classification Engine
-* Provide detailed breakdown of Output Engine
 * Provide detailed breakdown of Output Guide
 * Provide detailed breakdown of Representation Guide
 
@@ -15,10 +12,7 @@ To Do:
 **Summary**
 
 
-PrimedInclusivity is a python-based programmable framework, enabling researchers to detect and gauge the impact of primer binding site heterogeneity on NAAT-based assay performance.
-
-
-
+Primed Inclusivity is a python-based programmable framework, enabling researchers to detect and gauge the impact of primer binding site heterogeneity on NAAT-based assay performance.
 
 -----------------------
 **Installation**
@@ -42,6 +36,10 @@ From Conda
 # Coming Soon
 ```
 
+-----------------------
+**Example Analysis**
+
+Please navigate to the wiki where you will find a tutorial walk through of how to use the PrimedInclusivity tool and add custom modules. [**Click Here.**](https://github.com/MatthewHiggins2017/Primed_Inclusivity/wiki/Tutorial)  
 
 ------------------------
 
@@ -62,17 +60,13 @@ From Conda
 | OutputGuide                       | -OG     | Path to output guide NAN                                                                                        |           
 | OutputType                        | -OT     | Define what information should be written from database to CSV files. Options: All (A), Sets (S), Binding Classification (BC), Sample vs Primer (SvP), Representation Tables (RT). Ensure input values are comma seperated.                                                                                      |           
 | DatabasePath                      | -DB     | Path to Previously Generated Database. NAN                                                                                        |          
-| UpdateProbability                 | -UP     |  NAN                                                                                        |           
-| AnchorRegion                      | NA      |  NAN                                                                                        |           
-| AnchorRegionMismatchScaler        | NA      |  NAN                                                                                        |           
-| AnchorAdjacentMismatchScalar      | NA      |  NAN                                                                                        |           
-| AdjacentMismatchScalar            | NA      |  NAN                                                                                        |          
-| ComplementaryScalar               | NA      |  NAN                                                                                        |          
-| MismatchScaler                    | NA      |  NAN                                                                                        |           
-| ThermoMinLength                   | NA      |  NAN                                                                                        |           
-
-
-
+| UpdateProbability                 | -UP     |  Using existing binding sites update output values accordingly.                                                                                         |           
+| AnchorRegion                      | NA      |  See Optimising Primer Binding. Github Wiki.                                                                                         |           
+| AnchorRegionMismatchScaler        | NA      |  See Optimising Primer Binding. Github Wiki.                                                                                         |           
+| AnchorAdjacentMismatchScalar      | NA      |  See Optimising Primer Binding. Github Wiki.                                                                                         |           
+| AdjacentMismatchScalar            | NA      |  See Optimising Primer Binding. Github Wiki.                                                                                         |          
+| ComplementaryScalar               | NA      |  See Optimising Primer Binding. Github Wiki.                                                                                         |          
+| MismatchScaler                    | NA      |  See Optimising Primer Binding. Github Wiki.                                                                                         |                    
 
 
 -------------------------------

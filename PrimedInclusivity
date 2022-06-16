@@ -41,7 +41,6 @@ if __name__ == '__main__':
     parser.add_argument('--AdjacentMismatchScalar', help='',default=1.5)
     parser.add_argument('--ComplementaryScalar', help='',default=1)
     parser.add_argument('--MismatchScaler', help='',default=1)
-    parser.add_argument('--ThermoMinLength', help='',default=10)
 
     PrimedInclParameter = parser.parse_args()
 
