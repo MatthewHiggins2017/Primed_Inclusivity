@@ -1,6 +1,9 @@
 # **Primed Inclusivity**
 -----------------------
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/69949ec20c6a40d5be32ae5fe00115ee)](https://www.codacy.com/gh/MatthewHiggins2017/Primed_Inclusivity/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MatthewHiggins2017/Primed_Inclusivity&amp;utm_campaign=Badge_Grade)
+-----------------------
+
 **Note**-*This page is still under development*
 
 To Do:
